@@ -18,7 +18,7 @@ header {
 /* Estilos para la imagen del título */
 header img {
     display: flex;
-    max-width: 50%; /* Ajusta la imagen al ancho del contenedor */
+    max-width: 100%; /* Ajusta la imagen al ancho del contenedor */
     height: auto; /* Ajusta la altura de la imagen automáticamente para mantener la proporción */
     margin-right: 10px; /* Espacio entre la imagen y el texto */
 }
@@ -59,7 +59,7 @@ button.sugerencias-btn:hover {
     }
     
     img {
-        max-width: 55%; /* Establece el ancho máximo al 70% del contenedor en pantallas pequeñas */
+        max-width: 70%; /* Establece el ancho máximo al 70% del contenedor en pantallas pequeñas */
       }
     
     nav a {
