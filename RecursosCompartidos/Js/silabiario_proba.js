@@ -1,447 +1,170 @@
-	
-
-//window.onload = init();
-
-//http://cosicasdeinformatica.blogspot.com/2011/08/cuenta-atras-en-una-pagina-web.html?m=1
-//contador
+// Variables globales
 var timeId;
-var targetURL="../RecursosCompartidos/nonResolto.html" //URL A LA QUE DIRIGIR. Redirige a sí misma
-var inicioBarra=1 //SEGUNDOS A CONTAR
-//var segundoActual = document.redirect.contador.value=cuentaAtras+1
-var actualBarra = inicioBarra+1;
-var xBarra;
+var targetURL = "../RecursosCompartidos/nonResolto.html"; // URL a la que dirigir en caso de no resolverse
+var inicioBarra = 1; // Segundos a contar
+var actualBarra = inicioBarra + 1;
 var canvas = document.getElementById("barra");
-var ctx=canvas.getContext("2d");
-	
-	ctx.translate(300, 145);
-	ctx.rotate(Math.PI);
-	ctx.fillStyle="rgb(255,0,0)"
-	ctx.fillRect(10,10,280,120);
-//ctx.fillRect(10, 10, xBarra, 120);
+var ctx = canvas.getContext("2d");
 
+ctx.translate(300, 145);
+ctx.rotate(Math.PI);
+ctx.fillStyle = "rgb(255,0,0)";
+ctx.fillRect(10, 10, 280, 120);
+
+// Función para dibujar la barra de progreso
 function draw(xBarra) {
- 
-  if (canvas.getContext) {
-   
-	//const ctx = canvas.getContext("2d");
-
-	
-
-    ctx.fillStyle="rgb(0,0,255)";
-
-    ctx.fillRect(10, 10, xBarra, 120);
-   
-        
-  }
+    if (canvas.getContext) {
+        ctx.fillStyle = "rgb(0,0,255)";
+        ctx.fillRect(10, 10, xBarra, 120);
+    }
 }
 
-function barraParaRedireccionar(){
-	if (actualBarra<=280){
-		actualBarra+=20;
-		
-		//var textoSegundos = document.getElementById("Segundos");
-		//textoSegundos.innerHTML =actualBarra;
-		draw(actualBarra);
-		
-	} else {
-		window.location=targetURL
-		return
-	}
-	timeId = setTimeout("barraParaRedireccionar()",1000)
+// Función para avanzar la barra de progreso y redireccionar si está completa
+function barraParaRedireccionar() {
+    if (actualBarra <= 280) {
+        actualBarra += 20;
+        draw(actualBarra);
+    } else {
+        window.location = targetURL;
+        return;
+    }
+    timeId = setTimeout(barraParaRedireccionar, 1000);
 }
-barraParaRedireccionar()
+barraParaRedireccionar();
 
-//fin da conta atras
+// Crear un array de palabras
+var diccionario = [
+    ['afila','A-FI-LA','MATERIALESCOLAR'],['agua','A-GUA','BEBIDAS'],['albondigas','AL-BON-DI-GAS','COMIDAS'],['alex','A-LEX','FAMILIA'],['amarillo','A-MA-RI-LLO','COLORES'],['andar','AN-DAR','VERBOS'],['apagar','A-PA-GAR','VERBOS'],['arena','A-RE-NA','PLAYA'],['avion','A-VIÓN','TRANSPORTES'],['azul','A-ZUL','COLORES'],['bajar','BA-JAR','VERBOS'],['bañar','BA-ÑAR','VERBOS'],['barco','BAR-CO','TRANSPORTES'],['batido','BA-TI-DO','BEBIDAS'],['beber','BE-BER','VERBOS'],['bici','BI-CI','TRANSPORTES'],['blanco','BLAN-CO','COLORES'],['bocadillo','BO-CA-DI-LLO','COMIDAS'],['boli','BO-LI','MATERIALESCOLAR'],['bufanda','BU-FAN-DA','ROPA'],['bus','B-U-S','TRANSPORTES'],['caballo','CA-BA-LLO','ANIMALES'],['cafeteria','CA-FE-TE-RÍ-A','LUGARES'],['calle','CA-LLE','LUGARES'],['camion','CA-MIÓN',,'TRANSPORTES'],['camiseta','CA-MI-SE-TA','ROPA'],['casa','CA-SA','LUGARES'],['chocolate','CHO-CO-LA-TE','COMIDAS'],['coche','CO-CHE','TRANSPORTES'],    ['colegio','CO-LE-GIO','LUGARES'],['colorNaranja','NA-RAN-JA','COLORES'],['comer','CO-MER','VERBOS'],['croquetas','CRO-QUE-TAS','COMIDAS'],['cubo','CU-BO','COSASDEPLAYA'],['dormir','DOR-MIR','VERBOS'],['elly','E-LLY','PERSONAJES'],['encender','EN-CEN-DER','VERBOS'],['escuchar','ES-CU-CHAR','VERBOS'],['spiner','SPI-NER','JUGUETES'],['filete','FI-LE-TE','COMIDAS'],['fresa','FRE-SA','FRUTAS'],['fuente','FUEN-TE','LUGARES'],['furgoneta','FUR-GO-NE-TA','TRANSPORTES'],['galleta','GA-LLE-TA','COMIDAS'],['gallina','GA-LLI-NA','ANIMALES'],['gato','GA-TO','ANIMALES'],['globo','GLO-BO','TRANSPORTES'],['goma','GO-MA','MATERIALESCOLAR'],['gorro','GO-RRO','ROPA'],['gris','G-R-I-S','COLORES'],['jugar','JU-GAR','VERBOS'],['kinder','KIN-DER','COMIDAS'],['lapiz','LÁ-PIZ','MATERIALESCOLAR'],['lavar','LA-VAR','VERBOS'],['leche','LE-CHE','BEBIDAS'],['lula','LU-LA','PERSONAJES'],['macarrones','MA-CA-RRO-NES','COMIDAS'],['mama','MA-MÁ','FAMILIA'],['manzana','MAN-ZA-NA','FRUTAS'],['mar','M-A-R','PLAYA'],['marron','MA-RRÓN','COLORES'],['melocoton','ME-LO-CO-TÓN','FRUTAS'],['melon','ME-LÓN','FRUTAS'],['merendar','ME-REN-DAR','VERBOS'],['mirar','MI-RAR','VERBOS'],['morado','MO-RA-DO','COLORES'],['moto','MO-TO','TRANSPORTES'],['naranja','NA-RAN-JA','FRUTAS'],['negro','NE-GRO','COLORES'],['nina','NI-NA','PERSONAJES'],['ola','O-L-A','PLAYA'],['oveja','O-VE-JA','ANIMALES'],['pala','PA-LA','COSASDEPLAYA'],['pan','P-A-N','COMIDAS'],['pantalon','PAN-TA-LÓN','ROPA'],['papa','PA-PÁ','FAMILIA'],['parque','PAR-QUE','LUGARES'],['patatas','PA-TA-TAS','COMIDAS'],['patinete','PA-TI-NE-TE','JUGUETES'],['pato','PA-TO','PERSONAJES'],['pavo','PA-VO','COMIDAS'],['peppaPig','PE-PPA-PIG','PERSONAJES'],['pera','PE-RA','FRUTAS'],['perro','PE-RRO','ANIMALES'],['pescado','PES-CA-DO','COMIDAS'],['piña','PI-ÑA','FRUTAS'],['pingüino','PIN-GÜI-NO','ANIMALES'],['platano','PLÁ-TA-NO','FRUTAS'],['playa','PLA-YA','LUGARES'],['pocoyo','PO-CO-YÓ','PERSONAJES'],['pollo','PO-LLO','COMIDAS'],['puerta','PUER-TA','LUGARES'],['quiero','QUIE-RO','VERBOS'],['rastrillo','RAS-TRI-LLO','COSASDEPLAYA'],['roca','RO-CA','PLAYA'],['rojo','RO-JO','COLORES'],['rosa','RO-SA','COLORES'],['salchichas','SAL-CHI-CHAS','COMIDAS'],['saltar','SAL-TAR','VERBOS'],['sopa','SO-PA','COMIDAS'],['subir','SU-BIR','VERBOS'],['tablet','TA-BLET','JUGUETES'],['taxi','TA-XI','TRANSPORTES'],['trabajar','TRA-BA-JAR','VERBOS'],['tren','T-R-E-N','TRANSPORTES'],['verde','VER-DE','COLORES'],['yogur','YO-GUR','COMIDAS'],['zumo','ZU-MO','BEBIDAS']
+    
+    // Resto de las palabras...
+];
 
+// Seleccionar una palabra aleatoria del diccionario
+var palabra = diccionario[Math.floor(Math.random() * diccionario.length)];
 
-
-
-
-//Crear un array de palabras
-
-
-
-var diccionario = [['afila','A-FI-LA','MATERIALESCOLAR'],['agua','A-GU-A','BEBIDAS'],['albondigas','AL-BON-DI-GAS','COMIDAS'],['alex','A-LEX','FAMILIA'],['amarillo','A-MA-RI-LLO','COLORES'],['andar','AN-DAR','VERBOS'],['apagar','A-PA-GAR','VERBOS'],['arena','A-RE-NA','PLAYA'],['avion','A-VIÓN','TRANSPORTES'],['azul','A-ZUL','COLORES'],['bajar','BA-JAR','VERBOS'],['bañar','BA-ÑAR','VERBOS'],['barco','BAR-CO','TRANSPORTES'],['batido','BA-TI-DO','BEBIDAS'],['beber','BE-BER','VERBOS'],['bici','BI-CI','TRANSPORTES'],['blanco','BLAN-CO','COLORES'],['bocadillo','BO-CA-DI-LLO','COMIDAS'],['boli','BO-LI','MATERIALESCOLAR'],['bufanda','BU-FAN-DA','ROPA'],['bus','B-U-S','TRANSPORTES'],['caballo','CA-BA-LLO','ANIMALES'],['cafeteria','CA-FE-TE-RÍ-A','LUGARES'],['calle','CA-LLE','LUGARES'],['camion','CA-MIÓN',,'TRANSPORTES'],['camiseta','CA-MI-SE-TA','ROPA'],['casa','CA-SA','LUGARES'],['chocolate','CHO-CO-LA-TE','COMIDAS'],['coche','CO-CHE','TRANSPORTES'],['colegio','CO-LE-GIO','LUGARES'],['colorNaranja','NA-RAN-JA','COLORES'],['comer','CO-MER','VERBOS'],['croquetas','CRO-QUE-TAS','COMIDAS'],['cubo','CU-BO','COSASDEPLAYA'],['dormir','DOR-MIR','VERBOS'],['elly','E-LLY','PERSONAJES'],['encender','EN-CEN-DER','VERBOS'],['escuchar','ES-CU-CHAR','VERBOS'],['espiner','ES-PI-NER','JUGUETES'],['filete','FI-LE-TE','COMIDAS'],['fresa','FRE-SA','FRUTAS'],['fuente','FUEN-TE','LUGARES'],['furgoneta','FUR-GO-NE-TA','TRANSPORTES'],['galleta','GA-LLE-TA','COMIDAS'],['gallina','GA-LLI-NA','ANIMALES'],['gato','GA-TO','ANIMALES'],['globo','GLO-BO','TRANSPORTES'],['goma','GO-MA','MATERIALESCOLAR'],['gorro','GO-RRO','ROPA'],['gris','G-R-I-S','COLORES'],['jugar','JU-GAR','VERBOS'],['kinder','KIN-DER','COMIDAS'],['lapiz','LÁ-PIZ','MATERIALESCOLAR'],['lavar','LA-VAR','VERBOS'],['leche','LE-CHE','BEBIDAS'],['lula','LU-LA','PERSONAJES'],['macarrones','MA-CA-RRO-NES','COMIDAS'],['mama','MA-MÁ','FAMILIA'],['manzana','MAN-ZA-NA','FRUTAS'],['mar','M-A-R','PLAYA'],['marron','MA-RRÓN','COLORES'],['melocoton','ME-LO-CO-TÓN','FRUTAS'],['melon','ME-LÓN','FRUTAS'],['merendar','ME-REN-DAR','VERBOS'],['mirar','MI-RAR','VERBOS'],['morado','MO-RA-DO','COLORES'],['moto','MO-TO','TRANSPORTES'],['naranja','NA-RAN-JA','FRUTAS'],['negro','NE-GRO','COLORES'],['nina','NI-NA','PERSONAJES'],['ola','O-L-A','PLAYA'],['oveja','O-VE-JA','ANIMALES'],['pala','PA-LA','COSASDEPLAYA'],['pan','P-A-N','COMIDAS'],['pantalon','PAN-TA-LÓN','ROPA'],['papa','PA-PÁ','FAMILIA'],['parque','PAR-QUE','LUGARES'],['patatas','PA-TA-TAS','COMIDAS'],['patinete','PA-TI-NE-TE','JUGUETES'],['pato','PA-TO','PERSONAJES'],['pavo','PA-VO','COMIDAS'],['peppaPig','PE-PPA-PIG','PERSONAJES'],['pera','PE-RA','FRUTAS'],['perro','PE-RRO','ANIMALES'],['pescado','PES-CA-DO','COMIDAS'],['piña','PI-ÑA','FRUTAS'],['pingüino','PIN-GÜI-NO','ANIMALES'],['platano','PLÁ-TA-NO','FRUTAS'],['playa','PLA-YA','LUGARES'],['pocoyo','PO-CO-YÓ','PERSONAJES'],['pollo','PO-LLO','COMIDAS'],['puerta','PUER-TA','LUGARES'],['quiero','QUIE-RO','VERBOS'],['rastrillo','RAS-TRI-LLO','COSASDEPLAYA'],['roca','RO-CA','PLAYA'],['rojo','RO-JO','COLORES'],['rosa','RO-SA','COLORES'],['salchichas','SAL-CHI-CHAS','COMIDAS'],['saltar','SAL-TAR','VERBOS'],['sopa','SO-PA','COMIDAS'],['subir','SU-BIR','VERBOS'],['tablet','TA-BLET','JUGUETES'],['taxi','TA-XI','TRANSPORTES'],['trabajar','TRA-BA-JAR','VERBOS'],['tren','T-R-E-N','TRANSPORTES'],['verde','VER-DE','COLORES'],['yogur','YO-GUR','COMIDAS'],['zumo','ZU-MO','BEBIDAS']];
-
-var palabra = diccionario[Math.floor(Math.random()*diccionario.length)];
-
-var x=""; 
-// variables para cada item
-var palabraSelec=palabra[0];
-var palabraSilabas=palabra[1];
+// Variables para cada item
+var palabraSelec = palabra[0];
+var palabraSilabas = palabra[1];
 var palabraGrupo = palabra[2];
-var palabraImagen= palabra[0]+".png";
-var palabraSon= palabra[0]+".mp3";
-var palabraUnion="";
-// descompor palabra en silabas
+var palabraImagen = palabra[0] + ".png";
+var palabraSon = palabra[0] + ".mp3";
+var palabraUnion = palabraSilabas.replace(/-/g, "");
+
+// Desordenar las sílabas
 var silabas = palabraSilabas.split("-");
-var numSilabas= silabas.length;
-
-//reconstruir palabra seleccionada=silabas...palabraUnion
-
-for (var h = 0;h<silabas.length;h++){
-	palabraUnion +=silabas[h];
-}
-
-//aleatorizar as silabas Algoritmo de Fisher-Yates.
-
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
 shuffle(silabas);
 
-// asignar a imaxe ó div modelo
-var imaxen= document.getElementById("modelo");
-imaxen.setAttribute("src","../RecursosCompartidos/Pictos/"+palabraImagen);
+// Establecer la imagen modelo
+var imaxen = document.getElementById("modelo");
+imaxen.setAttribute("src", "../RecursosCompartidos/Pictos/" + palabraImagen);
 
-//silabas
+// Crear los elementos de las sílabas
+for (var i = 0; i < silabas.length; i++) {
+    var engadeSilabas = document.getElementById("imagenes");
+    var a = document.createElement("div");
+    a.id = "silaba" + i;
+    a.draggable = "true";
+    engadeSilabas.appendChild(a);
 
-//Crea divs e engadelles a silaba e ids e propiedades
+    var s1 = document.getElementById("silaba" + i);
+    var j = document.createElement("p");
+    j.id = "parrafo" + i;
+    s1.appendChild(j);
+    j.innerHTML = "<h1>" + silabas[i] + "</h1>";
 
-for (var i = 0;i<silabas.length;i++){
-var engadeSilabas= document.getElementById("imagenes");
-var a = document.createElement("div");
-a.id="silaba"+i;
-a.draggable="true"
-engadeSilabas.appendChild(a);
-
-var s1= document.getElementById("silaba"+i);
-
-var j = document.createElement("p");
-j.id="parrafo"+i;
-
-s1.appendChild(j);
-
-j.innerHTML="<h1>"+silabas[i]+"</h1>";
-
-var engadeContenedor= document.getElementById("contenedor");
-var c = document.createElement("div");
-c.id="contenedor"+i;
-c.draggable="false";
-engadeContenedor.appendChild(c);
-
-//var parra01= document.getElementById("parrafo1");
-
-
-
+    var engadeContenedor = document.getElementById("contenedor");
+    var c = document.createElement("div");
+    c.id = "contenedor" + i;
+    c.draggable = "false";
+    engadeContenedor.appendChild(c);
 }
-var x=""; 
-puzzle();
 
-//control puzzle
+// Función para mezclar elementos de un array (Algoritmo de Fisher-Yates)
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
+// Control del puzzle
 function puzzle() {
-
- 
-
-    // cremos los eventos para iniciar a arrastrar las imagenes
-
-    const imgOrigin=document.querySelectorAll("#imagenes div");
-
+    // Cremos los eventos para iniciar a arrastrar las imagenes
+    const imgOrigin = document.querySelectorAll("#imagenes div");
     imgOrigin.forEach(el => {
-
         el.addEventListener("dragstart", dragStart, false);
-
     });
 
- 
-//alert(imgOrigin);
-
-    // creamos los eventos para mover y soltar
-
-    const imgDest=document.querySelectorAll("#contenedor div");
-
+    // Creamos los eventos para mover y soltar
+    const imgDest = document.querySelectorAll("#contenedor div");
     imgDest.forEach(el => {
-
         el.addEventListener("dragenter", dragEnter, false);
-
         el.addEventListener("dragover", dragOver, false);
-
         el.addEventListener("dragleave", dragLeave, false);
-
         el.addEventListener("drop", drop, false);
-
     });
-
- 
 
     function dragStart(e) {
-
         e.dataTransfer.effectAllowed = 'move';
-
- 	
-
-        // guardamos el id del elemento que estamos moviendo
-
         e.dataTransfer.setData("text/plain", this.id);
-
     }
-
- 
 
     function dragEnter(e) {
-
         e.dataTransfer.dropEffect = 'move';
-
         e.preventDefault();
-
-	
-
     }
-
- 
 
     function dragOver(e) {
-
         e.dataTransfer.dropEffect = 'move';
-
         this.classList.add("over");
-
         e.preventDefault();
-
     }
-
- 
 
     function dragLeave(e) {
-
         this.classList.remove("over");
-
         e.preventDefault();
-
-    }
-/** funcion drop obtenida de chatgpt */
-function drop(e) {
-    this.classList.remove("over");
-
-    // Obtenemos el id de la imagen que estamos moviendo
-    const imgID = e.dataTransfer.getData("text/plain");
-    const img = document.getElementById(imgID);
-
-    // Obtenemos el contenedor de la imagen arrastrada y el contenedor destino
-    const origParent = img.parentElement;
-    const destParent = this.parentElement;
-
-    // Si el contenedor de destino no tiene imágenes, simplemente colocamos la imagen en ese contenedor
-    if (this.children.length === 0) {
-        this.appendChild(img);
-    } else {
-        // Si el contenedor de destino ya tiene una imagen, intercambiamos las imágenes
-        const origImg = this.firstElementChild;
-        origParent.appendChild(origImg);
-        this.appendChild(img);
     }
 
-    // Verificamos si se ha completado el puzzle
-    completado();
-
-    e.preventDefault();
-}
-
-
-    /** funcion que estaba en los dolores
-     
-function drop(e) {
-
+    function drop(e) {
         this.classList.remove("over");
-	    
-	    
- 
-
-        // obtenemos el id de la imagen que estamos moviendo
-
         const imgID = e.dataTransfer.getData("text/plain");
-
         const img = document.getElementById(imgID);
-
- 
-
-        if (this.innerHTML) {
-
-            if (img.parentElement.parentElement.id=="contenedor") {
-
-                // movemos una imagen encima de otra imagen dentro del contenedor
-
- 
-
-                // cogemos los valores de la imagen que se encuentra en el destino
-
-                const orig=this.querySelector("img");
-
-                // cogemos el contenedor de la imagen original
-
-                const dest=img.parentElement;
-
- 
-
-                // movemos la imagen que arrastramos
-
-                moverImagen(img, this);
-
-                // movemos la imagen que se encuentra en el contenedor donde
-
-                // hemos arrastrado la imagen
-
-                moverImagen(orig, dest);
-
-            }
-
+        const origParent = img.parentElement;
+        const destParent = this.parentElement;
+        if (this.children.length === 0) {
+            this.appendChild(img);
         } else {
-
-            // movemos la imagen a un contenedor vacio
-
-            moverImagen(img, this);
-
+            const origImg = this.firstElementChild;
+            origParent.appendChild(origImg);
+            this.appendChild(img);
         }
-
-        e.preventDefault();
-
- 
-
         completado();
-
+        e.preventDefault();
     }
-    **
- 
-
-    /**
-
-     * Funcion para mover una imagen.
-
-     *
-
-     * @param {object} origen - imagen a mover
-
-     * @param {object} destino - contenedor donde poner la imagen
-
-     */
-
-    /**function moverImagen(origen, destino) {
-        // Obtener el contenedor padre del nodo de origen
-        const parentOrigen = origen.parentElement;
-        // Obtener el contenedor padre del nodo de destino
-        const parentDestino = destino.parentElement;
-        
-        // Si los padres son diferentes
-        if (parentOrigen !== parentDestino) {
-            // Eliminar el nodo de origen de su contenedor original
-            parentOrigen.removeChild(origen);
-            // Agregar el nodo de origen al contenedor de destino
-            parentDestino.appendChild(origen);
-        } else {
-            // Si los padres son iguales, simplemente cambiar el orden de los nodos
-            // Usando el método de insertBefore
-            parentOrigen.insertBefore(origen, destino.nextSibling);
-        }
-        **/
-    function moverImagen(origen, destino) {
-
-        const fragment = document.createDocumentFragment();
-
-        fragment.appendChild(origen);
-
-        destino.appendChild(fragment);
-    
-//comprobar que hai en contenedor+i. Si estan todas as silabas acabouse        
-    
-     x=""
-        for (e=0;e<silabas.length;e++){
-		var p= document.getElementById("contenedor"+e);
-		var k = p.innerText;
-		x+=k;
-        
-   
-		}
- 
-
-    }
-
-
-
-    /**
-
-     * Funcion que verifica si se ha completado el puzzle
-
-     */
 
     function completado() {
-	    
-	 // window.alert(x+"--"+palabraUnion+"---"+palabraSon);
-	 
-	  if (x===palabraUnion){
-		  clearTimeout(timeId);
-		//window.alert("REMATADO");
-		var audio1 = new Audio("../RecursosCompartidos/audio/"+palabraSon);
-		audio1.play();
-	  //window.alert(typeof(x));
-	  //window.alert(typeof(palabraSelec));
-	  function esperar (){           
-            var audio2 = new Audio("../RecursosCompartidos/audio/bienHecho.mp3");
-		audio2.play();
-		}
-		setTimeout (esperar, 2000);
-		
-		function esperarVideo (){
-		var targetURL2="../RecursosCompartidos/resolto.html" //URL A LA QUE DIRIGIR.
-		window.location=targetURL2
-		}
-		setTimeout (esperarVideo, 4500);
-	
-	  
-		}
-        //const resultado=document.getElementById("resultado");
-
-        //resultado.classList.add("hide");
-
-
-        //const imgs=document.querySelectorAll("#contenedor div");
-
-        //if (imgs.length!=silabas.length) {
-
-          //  return false;
-
-        //}
-
-
-
-       // if ([...imgs].every((el, index) => el.id=="i"+index)) {
-        //if (string(x)==string(palabraSelec)) {
-		
-		//window.alert("COMPROBANDO.COMPROBANDO");
-		//clearTimeout(timeId);
-         //   resultado.classList.remove("hide");
-            
-		//var audio1 = new Audio(palabraSon);
-		//audio1.play();
-		
-		//function esperar (){           
-         //   var audio2 = new Audio('bienHecho.mp3');
-		//audio2.play();
-		//}
-		//setTimeout (esperar, 2000);
-		
-		//function esperarVideo (){
-		//var targetURL2="../../recursosCompartidos/resolto.html" //URL A LA QUE DIRIGIR.
-		//window.location=targetURL2
-		//}
-		//setTimeout (esperarVideo, 4500);
-        //}
-
+        var x = "";
+        for (e = 0; e < silabas.length; e++) {
+            var p = document.getElementById("contenedor" + e);
+            var k = p.innerText;
+            x += k;
+        }
+        if (x === palabraUnion) {
+            clearTimeout(timeId);
+            var audio1 = new Audio("../RecursosCompartidos/audio/" + palabraSon);
+            audio1.play();
+            function esperar() {
+                var audio2 = new Audio("../RecursosCompartidos/audio/bienHecho.mp3");
+                audio2.play();
+            }
+            setTimeout(esperar, 2000);
+            function esperarVideo() {
+                var targetURL2 = "../RecursosCompartidos/resolto.html";
+                window.location = targetURL2;
+            }
+            setTimeout(esperarVideo, 4500);
+        }
     }
-    
-
-
 }
 
-
-
-
-
-
-
-
-
+puzzle(); // Llamar a la función puzzle para iniciar el juego

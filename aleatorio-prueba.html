@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle</title>
+    <style>
+      /** Estilos CSS aquí **/
+        /* Estilos para la barra de progreso */
+
+
+
+    </style>
+</head>
+<body>
+    <div id="barra"></div>
+    <div id="modelo"></div>
+    <div id="imagenes"></div>
+    <div id="contenedor"></div>
+
+    <script>
+        // Corregir el código JavaScript aquí
+        // ...
+
+        // Variables para la cuenta atrás
+var timeId;
+var targetURL = "../RecursosCompartidos/nonResolto.html"; // URL a la que dirigirse después de completar el puzzle
+var inicioBarra = 1; // Segundos a contar
+var actualBarra = inicioBarra + 1;
+var xBarra;
+var canvas = document.getElementById("barra");
+var ctx = canvas.getContext("2d");
+
+// Dibujar la barra de progreso
+function draw(xBarra) {
+    if (canvas.getContext) {
+        ctx.fillStyle = "rgb(0,0,255)";
+        ctx.fillRect(10, 10, xBarra, 120);
+    }
+}
+
+// Función para actualizar la barra de progreso
+function barraParaRedireccionar() {
+    if (actualBarra <= 280) {
+        actualBarra += 20;
+        draw(actualBarra);
+    } else {
+        window.location = targetURL;
+        return;
+    }
+    timeId = setTimeout(barraParaRedireccionar, 1000);
+}
+
+barraParaRedireccionar();
+
+// Arreglo de palabras
+var diccionario = [
+    ['afila', 'A-FI-LA', 'MATERIALESCOLAR'],
+    ['agua', 'A-GU-A', 'BEBIDAS'],
+    // Otras palabras aquí...
+];
+
+// Seleccionar una palabra aleatoria del diccionario
+var palabra = diccionario[Math.floor(Math.random() * diccionario.length)];
+
+// Separar la palabra en sílabas
+var silabas = palabra[1].split("-");
+var numSilabas = silabas.length;
+
+// Función para mezclar las sílabas aleatoriamente
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+shuffle(silabas);
+
+// Actualizar la imagen del modelo con la palabra seleccionada
+var imaxen = document.getElementById("modelo");
+imaxen.setAttribute("src", "../RecursosCompartidos/Pictos/" + palabra[0] + ".png");
+
+// Crear elementos HTML para cada sílaba y agregarlos al documento
+var engadeSilabas = document.getElementById("imagenes");
+for (var i = 0; i < silabas.length; i++) {
+    var divSilaba = document.createElement("div");
+    divSilaba.id = "silaba" + i;
+    divSilaba.draggable = true;
+    divSilaba.innerHTML = "<p><h1>" + silabas[i] + "</h1></p>";
+    engadeSilabas.appendChild(divSilaba);
+}
+
+// Función principal del juego
+function puzzle() {
+    const imgOrigin = document.querySelectorAll("#imagenes div");
+    imgOrigin.forEach(el => {
+        el.addEventListener("dragstart", dragStart, false);
+    });
+
+    const imgDest = document.querySelectorAll("#contenedor div");
+    imgDest.forEach(el => {
+        el.addEventListener("dragenter", dragEnter, false);
+        el.addEventListener("dragover", dragOver, false);
+        el.addEventListener("dragleave", dragLeave, false);
+        el.addEventListener("drop", drop, false);
+    });
+
+    function dragStart(e) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData("text/plain", this.id);
+    }
+
+    function dragEnter(e) {
+        e.dataTransfer.dropEffect = 'move';
+        e.preventDefault();
+    }
+
+    function dragOver(e) {
+        e.dataTransfer.dropEffect = 'move';
+        this.classList.add("over");
+        e.preventDefault();
+    }
+
+    function dragLeave(e) {
+        this.classList.remove("over");
+        e.preventDefault();
+    }
+
+    function drop(e) {
+        this.classList.remove("over");
+        const imgID = e.dataTransfer.getData("text/plain");
+        const img = document.getElementById(imgID);
+        const origParent = img.parentElement;
+        const destParent = this.parentElement;
+        if (this.children.length === 0) {
+            this.appendChild(img);
+        } else {
+            const origImg = this.firstElementChild;
+            origParent.appendChild(origImg);
+            this.appendChild(img);
+        }
+        completado();
+        e.preventDefault();
+    }
+
+    function completado() {
+        var x = "";
+        for (e = 0; e < silabas.length; e++) {
+            var p = document.getElementById("contenedor" + e);
+            var k = p.innerText;
+            x += k;
+        }
+        if (x === palabra[1]) {
+            clearTimeout(timeId);
+            var audio1 = new Audio("../RecursosCompartidos/audio/" + palabra[0] + ".mp3");
+            audio1.play();
+            function esperar() {
+                var audio2 = new Audio("../RecursosCompartidos/audio/bienHecho.mp3");
+                audio2.play();
+            }
+            setTimeout(esperar, 2000);
+            function esperarVideo() {
+                var targetURL2 = "../RecursosCompartidos/resolto.html";
+                window.location = targetURL2;
+            }
+            setTimeout(esperarVideo, 4500);
+        }
+    }
+}
+
+puzzle(); // Llamar a la función principal del juego al cargar la página
+
+    </script>
+</body>
+</html>
