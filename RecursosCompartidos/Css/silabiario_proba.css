@@ -82,7 +82,7 @@ article>div {
     #contenedor {
 
         display: flex;
-        flex-wrap:  nowrap;
+        flex-wrap: nowrap;
         flex-grow:1;
         align-items:center;
         justify-content:center;
@@ -106,16 +106,15 @@ article>div {
 
     #imagenes {
 
-        display: flex;
+        display: flex;;
     
-		flex-wrap:  nowrap;
+		flex-wrap: nowrap;
         flex-grow:1;
         align-items:center;
         justify-content:center;
         
 
-        height:140px;
-
+        height:130px;
         max-width:100%;
 
         border: solid 4px #808080;
@@ -146,7 +145,7 @@ article>div {
 
         background-color:#CEF608;
 
-        opacity: 0.5;
+        opacity: 1;
 
     }
 

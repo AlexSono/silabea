@@ -14,13 +14,17 @@ header {
     width: 100%;
     height: auto; /* Ajusta la altura de la imagen automáticamente para mantener la proporción */
     text-align: center;
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
 }
 /* Estilos para la imagen del título */
 header img {
     display: flex;
     max-width: 100%; /* Ajusta la imagen al ancho del contenedor */
     height: auto; /* Ajusta la altura de la imagen automáticamente para mantener la proporción */
-    margin-right: 10px; /* Espacio entre la imagen y el texto */
+    margin-right: center; /* Espacio entre la imagen y el texto */
+    
 }
 
 nav {

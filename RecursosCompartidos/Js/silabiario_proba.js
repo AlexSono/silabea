@@ -214,10 +214,38 @@ function puzzle() {
         e.preventDefault();
 
     }
+/** funcion drop obtenida de chatgpt */
+function drop(e) {
+    this.classList.remove("over");
 
- 
+    // Obtenemos el id de la imagen que estamos moviendo
+    const imgID = e.dataTransfer.getData("text/plain");
+    const img = document.getElementById(imgID);
 
-    function drop(e) {
+    // Obtenemos el contenedor de la imagen arrastrada y el contenedor destino
+    const origParent = img.parentElement;
+    const destParent = this.parentElement;
+
+    // Si el contenedor de destino no tiene imágenes, simplemente colocamos la imagen en ese contenedor
+    if (this.children.length === 0) {
+        this.appendChild(img);
+    } else {
+        // Si el contenedor de destino ya tiene una imagen, intercambiamos las imágenes
+        const origImg = this.firstElementChild;
+        origParent.appendChild(origImg);
+        this.appendChild(img);
+    }
+
+    // Verificamos si se ha completado el puzzle
+    completado();
+
+    e.preventDefault();
+}
+
+
+    /** funcion que estaba en los dolores
+     
+function drop(e) {
 
         this.classList.remove("over");
 	    
@@ -226,9 +254,9 @@ function puzzle() {
 
         // obtenemos el id de la imagen que estamos moviendo
 
-        const imgID=e.dataTransfer.getData("text/plain");
+        const imgID = e.dataTransfer.getData("text/plain");
 
-        const img=document.getElementById(imgID);
+        const img = document.getElementById(imgID);
 
  
 
@@ -277,7 +305,7 @@ function puzzle() {
         completado();
 
     }
-
+    **
  
 
     /**
@@ -292,6 +320,24 @@ function puzzle() {
 
      */
 
+    /**function moverImagen(origen, destino) {
+        // Obtener el contenedor padre del nodo de origen
+        const parentOrigen = origen.parentElement;
+        // Obtener el contenedor padre del nodo de destino
+        const parentDestino = destino.parentElement;
+        
+        // Si los padres son diferentes
+        if (parentOrigen !== parentDestino) {
+            // Eliminar el nodo de origen de su contenedor original
+            parentOrigen.removeChild(origen);
+            // Agregar el nodo de origen al contenedor de destino
+            parentDestino.appendChild(origen);
+        } else {
+            // Si los padres son iguales, simplemente cambiar el orden de los nodos
+            // Usando el método de insertBefore
+            parentOrigen.insertBefore(origen, destino.nextSibling);
+        }
+        **/
     function moverImagen(origen, destino) {
 
         const fragment = document.createDocumentFragment();
@@ -299,7 +345,7 @@ function puzzle() {
         fragment.appendChild(origen);
 
         destino.appendChild(fragment);
-        
+    
 //comprobar que hai en contenedor+i. Si estan todas as silabas acabouse        
     
      x=""
