@@ -82,7 +82,7 @@ article>div {
     #contenedor {
 
         display: flex;
-        flex-wrap:  wrap;
+        flex-wrap:  nowrap;
         flex-grow:1;
         align-items:center;
         justify-content:center;
@@ -108,7 +108,7 @@ article>div {
 
         display: flex;
     
-		flex-wrap:  wrap;
+		flex-wrap:  nowrap;
         flex-grow:1;
         align-items:center;
         justify-content:center;
