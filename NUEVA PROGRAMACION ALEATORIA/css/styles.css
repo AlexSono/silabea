@@ -1,0 +1,17 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.lista {
+    margin: 20px 0;
+}
+
+.botones button {
+    margin: 0 5px;
+}

@@ -3,85 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Seleccionar Pictograma de Usuario</title>
+    <!-- La ruta al archivo CSS se ha cambiado a la carpeta css/ -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Menú</h1>
-        <div class="options">
-            <div class="dropdown-column">
-                <label for="family1">Familia 1:</label>
-                <select id="family1" name="family1">
-                    <!-- Opciones de la familia 1 -->
-                </select>
-            </div>
-            <div class="dropdown-column">
-                <label for="word1">Palabra 1:</label>
-                <select id="word1" name="word1">
-                    <!-- Opciones de la palabra 1 -->
-                </select>
-            </div>
+        <input type="text" id="nombreUsuario" placeholder="Escribe tu nombre">
+        <select id="seleccionPictograma">
+            <option value="estrella">Estrella</option>
+            <option value="pelota">Pelota</option>
+            <option value="camion">Camión</option>
+            <option value="muñeca">Muñeca</option>
+            <option value="peppa">Peppa Pig</option>
+        </select>
+        <button onclick="agregarUsuario()">Agregar a la lista</button>
+        <div id="listaUsuarios" class="lista">
+            <!-- Aquí se agregarán los usuarios -->
         </div>
-        <div class="options">
-            <div class="dropdown-column">
-                <label for="family2">Familia 2:</label>
-                <select id="family2" name="family2">
-                    <!-- Opciones de la familia 2 -->
-                </select>
-            </div>
-            <div class="dropdown-column">
-                <label for="word2">Palabra 2:</label>
-                <select id="word2" name="word2">
-                    <!-- Opciones de la palabra 2 -->
-                </select>
-            </div>
+        <div class="botones">
+            <button onclick="moverUsuario('arriba')">▲</button>
+            <button onclick="moverUsuario('abajo')">▼</button>
+            <button onclick="siguientePantalla()">Siguiente</button>
         </div>
-        <div class="options">
-            <div class="dropdown-column">
-                <label for="family3">Familia 3:</label>
-                <select id="family3" name="family3">
-                    <!-- Opciones de la familia 3 -->
-                </select>
-            </div>
-            <div class="dropdown-column">
-                <label for="word3">Palabra 3:</label>
-                <select id="word3" name="word3">
-                    <!-- Opciones de la palabra 3 -->
-                </select>
-            </div>
-        </div>
-        <div class="options">
-            <div class="dropdown-column">
-                <label for="family4">Familia 4:</label>
-                <select id="family4" name="family4">
-                    <!-- Opciones de la familia 4 -->
-                </select>
-            </div>
-            <div class="dropdown-column">
-                <label for="word4">Palabra 4:</label>
-                <select id="word4" name="word4">
-                    <!-- Opciones de la palabra 4 -->
-                </select>
-            </div>
-        </div>
-        <div class="options">
-            <label for="rounds">Número de repeticiones:</label>
-            <select id="rounds" name="rounds">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-            </select>
-        </div>
-        <button id="start-button">Iniciar Juego</button>
     </div>
-    <script src="script.js"></script>
+    <!-- La ruta al archivo JavaScript se ha cambiado a la carpeta js/ -->
+    <script src="js/script.js"></script>
 </body>
 </html>
